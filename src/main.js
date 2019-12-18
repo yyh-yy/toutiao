@@ -4,6 +4,7 @@ import router from './router'
 import 'element-ui/lib/theme-chalk/index.css' // 引入样式
 import ElementUI from 'element-ui'
 import './style/index.less'
+
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
