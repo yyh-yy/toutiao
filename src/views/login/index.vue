@@ -26,6 +26,7 @@
 </template>
 
 <script>
+
 export default {
   data () {
     return {
@@ -57,7 +58,17 @@ export default {
     submitForm () {
       this.$refs.myForm.validate((isOk) => {
         if (isOk) {
-          alert('登录成功')
+          this.$http.post(
+            '/authorizations', this.loginForm
+          ).then(result => {
+            window.localStorage.setItem('user-token', result.data.data.token)
+            this.$router.push('/home')
+          }).catch(() => {
+            this.message({
+              type: 'warning',
+              message: '手机号或验证码错误'
+            })
+          })
         }
       })
     }
