@@ -13,14 +13,14 @@
 </template>
 
 <script>
-import sidebar from '../../components/home/sidebar'
-import header from '../../components/home/header'
+// import sidebar from '../../components/home/sidebar'
+// import header from '../../components/home/header'
 export default {
-  components: {
-    'side-bar': sidebar,
-    'header-top': header
+  // components: {
+  //   'side-bar': sidebar,
+  //   'header-top': header
 
-  }
+  // }
 }
 </script>
 

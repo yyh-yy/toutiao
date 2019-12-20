@@ -7,13 +7,13 @@
   </el-col>
   <el-col :span="12" class="right">
       <el-row type="flex" justify="end" align="middle">
-          <img src="../../assets/img/avatar.jpg" alt="">
-    <el-dropdown>
-      <span>yyh</span>
+          <img :src="userInfo.photo ? userInfo.photo:userImg" alt="">
+    <el-dropdown @command='clickMenu'>
+      <span>{{userInfo.name}}</span>
         <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item>个人信息</el-dropdown-item>
-        <el-dropdown-item>Git地址</el-dropdown-item>
-        <el-dropdown-item>退出</el-dropdown-item>
+        <el-dropdown-item command='info'>个人信息</el-dropdown-item>
+        <el-dropdown-item command='git'>Git地址</el-dropdown-item>
+        <el-dropdown-item command='esc'>退出</el-dropdown-item>
         </el-dropdown-menu>
     </el-dropdown>
       </el-row>
@@ -24,6 +24,37 @@
 
 <script>
 export default {
+  data () {
+    return {
+      userInfo: {},
+      userImg: require('../../assets/img/avatar.jpg')
+    }
+  },
+  created () {
+    let token = window.localStorage.getItem('user-token')
+    this.$http({
+      url: '/user/profile',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then(res => {
+      console.log(res)
+
+      this.userInfo = res.data.data
+    })
+  },
+  methods: {
+    clickMenu (command) {
+      if (command === 'info') {
+        alert('还未完成')
+      } else if (command === 'git') {
+        window.location.href = 'https://github.com/yyh-yy/toutiao/commit/f4955027ada6b14eecccbde59e72e7c465600aa2'
+      } else {
+        window.localStorage.removeItem('user-token')
+        this.$router.push('/login')
+      }
+    }
+  }
 
 }
 </script>
@@ -42,8 +73,8 @@ export default {
     }
     .right {
         img {
-            width: 35px;
-            height: 35px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
 
         }
