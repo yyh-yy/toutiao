@@ -4,7 +4,9 @@
 <side-bar style="height:100vh;background-color:#353b4e"></side-bar>
 </el-aside>
  <el-container>
-<el-header>顶部</el-header>
+<el-header>
+  <header-top></header-top>
+</el-header>
  <el-main>内容</el-main>
    </el-container>
  </el-container>
@@ -12,9 +14,11 @@
 
 <script>
 import sidebar from '../../components/home/sidebar'
+import header from '../../components/home/header'
 export default {
   components: {
-    'side-bar': sidebar
+    'side-bar': sidebar,
+    'header-top': header
 
   }
 }
