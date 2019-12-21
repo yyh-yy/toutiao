@@ -7,20 +7,17 @@
 <el-header>
   <header-top></header-top>
 </el-header>
- <el-main>内容</el-main>
+ <el-main>
+   <router-view></router-view>
+ </el-main>
    </el-container>
  </el-container>
 </template>
 
 <script>
-// import sidebar from '../../components/home/sidebar'
-// import header from '../../components/home/header'
-export default {
-  // components: {
-  //   'side-bar': sidebar,
-  //   'header-top': header
 
-  // }
+export default {
+
 }
 </script>
 
