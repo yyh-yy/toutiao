@@ -61,7 +61,7 @@ export default {
           this.$http.post(
             '/authorizations', this.loginForm
           ).then(result => {
-            window.localStorage.setItem('user-token', result.data.data.token)
+            window.localStorage.setItem('user-token', result.data.token)
             this.$router.push('/home')
           }).catch(() => {
             this.message({

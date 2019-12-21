@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import './permission'
 import 'element-ui/lib/theme-chalk/index.css' // 引入样式
 import ElementUI from 'element-ui'
 import Component from './components/index'
 import './style/index.less'
-import axios from 'axios'
+import axios from './utils/request'
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(Component)

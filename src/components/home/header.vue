@@ -31,16 +31,16 @@ export default {
     }
   },
   created () {
-    let token = window.localStorage.getItem('user-token')
+    // let token = window.localStorage.getItem('user-token')
     this.$http({
-      url: '/user/profile',
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      url: '/user/profile'
+      // headers: {
+      //   Authorization: `Bearer ${token}`
+      // }
     }).then(res => {
       console.log(res)
 
-      this.userInfo = res.data.data
+      this.userInfo = res.data
     })
   },
   methods: {
