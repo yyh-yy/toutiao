@@ -1,5 +1,5 @@
 <template>
-  <div>hkasdjkahdk</div>
+ <bread-crumb></bread-crumb>
 </template>
 
 <script>

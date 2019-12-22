@@ -11,7 +11,7 @@ Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.use(Component)
 
-axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0' // 设置一个常态值
+// 设置一个常态值
 Vue.prototype.$http = axios // 赋值给全局对象
 
 new Vue({
