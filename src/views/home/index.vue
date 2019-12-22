@@ -1,7 +1,7 @@
 <template>
  <el-container>
 <el-aside>
-<side-bar style="height:100vh;background-color:#353b4e"></side-bar>
+<side-bar style="min-height:100vh;background-color:#353b4e"></side-bar>
 </el-aside>
  <el-container>
 <el-header>
