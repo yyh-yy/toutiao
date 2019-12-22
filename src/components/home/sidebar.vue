@@ -32,6 +32,7 @@ export default {
 
 <style lang='less' scoped>
 .side-bar{
+
     width: 300px;
     .el-menu {
         border-right: none;

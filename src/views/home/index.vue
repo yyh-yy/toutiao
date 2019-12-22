@@ -1,7 +1,7 @@
 <template>
  <el-container>
-<el-aside>
-<side-bar style="min-height:100vh;background-color:#353b4e"></side-bar>
+<el-aside style="min-height:100vh;background-color:#353b4e;">
+<side-bar ></side-bar>
 </el-aside>
  <el-container>
 <el-header>
@@ -21,17 +21,6 @@ export default {
 }
 </script>
 
-<style lang='less' scoped>
-.nav{
-  width: 230px;
-  .title {
-    background-color: #2e2f32;
-    text-align: center;
-    img {
-      height: 35px;
-    }
+<style>
 
-  }
-
-}
 </style>

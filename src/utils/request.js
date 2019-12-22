@@ -17,7 +17,7 @@ axios.interceptors.response.use(function (response) {
   let message = ''
   switch (status) {
     case 400:
-      message = '用户名或密码错误'
+      message = '请求参数错误'
       break
     case 403:
       message = '403 refresh_token未携带或已过期'
