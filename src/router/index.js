@@ -19,7 +19,11 @@ const routes = [
       component: () => import('../views/comment')
     },
     { path: 'material',
-      component: () => import('../views/material') }]
+      component: () => import('../views/material') },
+    {
+      path: 'articles',
+      component: () => import('../views/article')
+    }]
 
   },
   {
