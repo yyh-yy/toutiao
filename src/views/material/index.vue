@@ -15,7 +15,13 @@
           </el-card>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="收藏图片" name="collect"></el-tab-pane>
+      <el-tab-pane label="收藏图片" name="collect">
+        <div class="img-list">
+          <el-card class="img-card" v-for="item in list" :key="item.id">
+            <img :src="item.url" alt />
+          </el-card>
+        </div>
+      </el-tab-pane>
     </el-tabs>
   </el-card>
 </template>
@@ -36,8 +42,8 @@ export default {
       this.$http({
         url: '/user/images',
         params: {
-          // collect: this.activeName === 'collect'
-          collect: false
+          collect: this.activeName === 'collect'
+
         }
       }).then(res => {
         this.list = res.data.results
