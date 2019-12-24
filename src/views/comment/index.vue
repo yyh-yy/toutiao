@@ -1,6 +1,6 @@
 
 <template>
-<div>
+<div v-loading='loading'>
   <el-card>
       <bread-crumb slot="header">
       <template slot="title">
@@ -36,7 +36,8 @@ export default {
         pageSize: 10,
         currentPage: 1
 
-      }
+      },
+      loading: false
     }
   },
   methods:
@@ -46,12 +47,14 @@ export default {
     this.getComment()
   },
   getComment () {
+    this.loading = true
     this.$http({
       url: '/articles',
       params: { response_type: 'comment', page: this.page.currentPage, per_page: this.page.pageSize }
     }).then(res => {
       this.list = res.data.results
       this.page.total = res.data.total_count
+      this.loading = false
     })
   },
   formatterBoolean (row, column, cellValue, index) {
