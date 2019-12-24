@@ -21,7 +21,7 @@
       </el-table>
   </el-card>
   <el-row type="flex" justify="center" style="height:80px" align="middle">
-  <el-pagination background layout="prev, pager, next" :current-page='page.currentPage' :total="page.total" :page-sizes='page.pageSize'></el-pagination>
+  <el-pagination @current-change='changePage' background layout="prev, pager, next" :current-page='page.currentPage' :total="page.total" :page-sizes='page.pageSize'></el-pagination>
 </el-row>
 </div>
 </template>
@@ -41,10 +41,14 @@ export default {
   },
   methods:
 {
+  changePage (newPage) {
+    this.page.currentPage = newPage
+    this.getComment()
+  },
   getComment () {
     this.$http({
       url: '/articles',
-      params: { response_type: 'comment' }
+      params: { response_type: 'comment', page: this.page.currentPage, per_page: this.page.pageSize }
     }).then(res => {
       this.list = res.data.results
       this.page.total = res.data.total_count
