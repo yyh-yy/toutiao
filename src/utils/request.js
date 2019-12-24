@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { Message } from 'element-ui'
 import router from '../router'
+import JSONBig from 'json-bigint'
 // import router from '../router'
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
 axios.interceptors.request.use(function (config) {
@@ -10,6 +11,10 @@ axios.interceptors.request.use(function (config) {
 }, function (error) {
   return Promise.reject(error)
 })
+axios.defaults.transformResponse = [function (data) {
+  return data ? JSONBig.parse(data) : {} // 解决js处理大数字失真问题
+}]
+// 响应器拦截
 axios.interceptors.response.use(function (response) {
   return response.data ? response.data : {}
 }, function (error) {
@@ -37,7 +42,7 @@ axios.interceptors.response.use(function (response) {
       break
   }
   Message({ type: 'error', message })
-  return new Promise(function () {})
+  return Promise.reject(error)
 })
 
 export default axios

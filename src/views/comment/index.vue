@@ -1,4 +1,6 @@
+
 <template>
+<div>
   <el-card>
       <bread-crumb slot="header">
       <template slot="title">
@@ -18,13 +20,23 @@
           </el-table-column>
       </el-table>
   </el-card>
+  <el-row type="flex" justify="center" style="height:80px" align="middle">
+  <el-pagination background layout="prev, pager, next" :current-page='page.currentPage' :total="page.total" :page-sizes='page.pageSize'></el-pagination>
+</el-row>
+</div>
 </template>
 
 <script>
 export default {
   data () {
     return {
-      list: []
+      list: [],
+      page: {
+        total: 0,
+        pageSize: 10,
+        currentPage: 1
+
+      }
     }
   },
   methods:
@@ -35,6 +47,7 @@ export default {
       params: { response_type: 'comment' }
     }).then(res => {
       this.list = res.data.results
+      this.page.total = res.data.total_count
     })
   },
   formatterBoolean (row, column, cellValue, index) {
@@ -48,10 +61,13 @@ export default {
       this.$http({
         method: 'put',
         url: '/comments/status',
-        params: { article_id: row.id },
+        params: { article_id: row.id.toString() },
         data: { allow_comment: !row.comment_status }
       }).then(res => {
+        debugger
         this.getComment()
+      }).catch(() => {
+        debugger
       })
     })
   }
