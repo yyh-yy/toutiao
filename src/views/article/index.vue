@@ -34,14 +34,14 @@
     <el-row class="total" type="flex" align="middle">
         <span>共找到10000条符合条件的内容</span>
     </el-row>
-    <div class="article-item">
+    <div class="article-item" v-for="item in list" :key='item.id.toString()'>
         <!-- 左侧 -->
         <div class="left">
-            <img src="../../assets/img/avatar.jpg" alt="">
+            <img :src="item.cover.images.length ? item.cover.images[0]:defaultImg" alt="">
             <div class="info">
-                <span>89期的程序们</span>
-                <el-tag class="tag">标签一</el-tag>
-                <span class="date">2019-12-24 15:07:01</span>
+                <span>{{item.title}}</span>
+                <el-tag class="tag" style="width:80px">{{item.status}}</el-tag>
+                <span class="date">{{item.pubdate}}</span>
 
             </div>
         </div>
@@ -63,24 +63,35 @@ export default {
         dateRange: []
 
       },
-      channels: []
+      channels: [],
+      list: [],
+      defaultImg: require('../../assets/img/avatar.jpg')
     }
   },
   methods: {
+    //   获取文章数据列表
+    getArticles () {
+      this.$http({
+        url: '/articles'
+
+      }).then(res => {
+        console.log(res)
+        this.list = res.data.results
+      })
+    },
     //   获取文章频道
     getChannels () {
       this.$http({
         url: '/channels'
 
       }).then(res => {
-        console.log(res)
-
         this.channels = res.data.channels
       })
     }
   },
   created () {
     this.getChannels()
+    this.getArticles()
   }
 }
 </script>
