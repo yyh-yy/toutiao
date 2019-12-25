@@ -5,7 +5,7 @@
     </bread-crumb>
     <el-form style="padding-left:55px">
       <el-form-item label="文章状态:">
-        <el-radio-group v-model="searchForm.status">
+        <el-radio-group v-model="searchForm.status" @change="changeCondition">
           <!-- 放置一个单选组  文章状态，0-草稿，1-待审核，2-审核通过，3-审核失败，4-已删除，不传为全部-->
           <el-radio :label="5">全部</el-radio>
           <el-radio :label="0">草稿</el-radio>
@@ -15,24 +15,26 @@
         </el-radio-group>
       </el-form-item>
       <el-form-item label="频道列表:">
-        <el-select placeholder="请选择频道" v-model="searchForm.channel_id">
+        <el-select placeholder="请选择频道" v-model="searchForm.channel_id" @change="changeCondition">
             <el-option v-for="item in channels" :key='item.id' :label="item.name" :value="item.id">
 
             </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="时间选择:">
+      <el-form-item label="时间选择:" >
         <el-date-picker
+        @change="changeCondition"
         v-model="searchForm.dateRange"
           type="daterange"
           range-separator="-"
           start-placeholder="开始日期"
           end-placeholder="结束日期"
+          value-format="yyyy-MM-dd"
         ></el-date-picker>
       </el-form-item>
     </el-form>
     <el-row class="total" type="flex" align="middle">
-        <span>共找到10000条符合条件的内容</span>
+        <span>共找到{{}}条符合条件的内容</span>
     </el-row>
     <div class="article-item" v-for="item in list" :key='item.id.toString()'>
         <!-- 左侧 -->
@@ -40,7 +42,8 @@
             <img :src="item.cover.images.length ? item.cover.images[0]:defaultImg" alt="">
             <div class="info">
                 <span>{{item.title}}</span>
-                <el-tag class="tag" style="width:80px">{{item.status}}</el-tag>
+                <el-tag :type='item.status | filterType'
+                class="tag" style="width:80px; text-align:center">{{item.status | filterStatus}}</el-tag>
                 <span class="date">{{item.pubdate}}</span>
 
             </div>
@@ -55,6 +58,37 @@
 
 <script>
 export default {
+  // 过滤器
+  filters: {
+    filterStatus (value) {
+      switch (value) {
+        case 0:
+          return '草稿'
+        case 1:
+          return '待审核'
+        case 2:
+          return '已发表'
+        case 3:
+          return '审核失败'
+        default:
+          break
+      }
+    },
+    filterType (value) {
+      switch (value) {
+        case 0:
+          return 'warning'
+        case 1:
+          return 'info'
+        case 2:
+          return ''
+        case 3:
+          return 'danger'
+        default:
+          break
+      }
+    }
+  },
   data () {
     return {
       searchForm: {
@@ -69,10 +103,22 @@ export default {
     }
   },
   methods: {
+    //   搜索筛选
+    changeCondition () {
+      let params = {
+        status: this.searchForm.status === 5 ? null : this.searchForm.status,
+        channel_id: this.searchForm.channel_id,
+        begin_pubdate: this.searchForm.dateRange.length ? this.searchForm.dateRange[0] : null,
+        end_pubdate: this.searchForm.dateRange.length > 1 ? this.searchForm.dateRange[1] : null
+
+      }
+      this.getArticles(params)
+    },
     //   获取文章数据列表
-    getArticles () {
+    getArticles (params) {
       this.$http({
-        url: '/articles'
+        url: '/articles',
+        params
 
       }).then(res => {
         console.log(res)
