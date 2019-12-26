@@ -4,12 +4,12 @@
       <template slot="title">发表文章</template>
     </bread-crumb>
     <!-- 容器 -->
-    <el-form :model="formData" :rules="publishRules" style="margin-left:50px" label-width="100px">
+    <el-form :model="formData" :rules="publishRules" style="margin-left:50px" label-width="100px" ref="publishForm">
       <el-form-item label="标题" prop="title">
         <el-input style="width:60%" v-model="formData.title"></el-input>
       </el-form-item>
-      <el-form-item label="内容" prop="content" v-model="formData.content">
-        <el-input type="textarea" :row="4"></el-input>
+      <el-form-item label="内容" prop="content" >
+        <el-input type="textarea" :row="4" v-model="formData.content"></el-input>
       </el-form-item>
       <el-form-item label="封面" prop="cover">
         <el-radio-group v-model="formData.cover.type">
@@ -31,8 +31,8 @@
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">发布</el-button>
-        <el-button>存入草稿</el-button>
+        <el-button type="primary" @click="publishArticle()">发布</el-button>
+        <el-button @click="publishArticle(true)">存入草稿</el-button>
       </el-form-item>
     </el-form>
   </el-card>
@@ -48,7 +48,7 @@ export default {
         content: '',
         cover: {
           type: 0,
-          images: ['', '', '']
+          images: []
         },
         channel_id: null
       },
@@ -65,11 +65,25 @@ export default {
     }
   },
   methods: {
+
     //   发布文章
-    publishArticle () {
+    publishArticle (draft) {
+      // 手动校验
       this.$refs.publishForm.validate(isOk => {
         if (isOk) {
           console.log('校验通过')
+          this.$http({
+            url: '/articles',
+            method: 'post',
+            params: { draft },
+            data: this.formData
+          }).then(() => {
+            this.$message({
+              type: 'success',
+              message: '保存成功'
+            })
+            this.$router.push('/home/articles')
+          })
         }
       })
     },
