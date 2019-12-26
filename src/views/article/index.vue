@@ -50,7 +50,7 @@
       </div>
       <div class="right">
         <i class="el-icon-edit">修改</i>
-        <i class="el-icon-delete">删除</i>
+        <i class="el-icon-delete" @click="delMaterial(item.id)">删除</i>
       </div>
     </div>
     <el-row type="flex" justify="center" style="height:80px" align="middle">
@@ -115,6 +115,21 @@ export default {
     }
   },
   methods: {
+    // 删除
+    delMaterial (id) {
+      this.$confirm('是否要删除该文章').then(() => {
+        this.$http({
+          url: `/articles/${id.toString()}`,
+          method: 'delete'
+        }).then(res => {
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          })
+          this.getConditionArticle()
+        })
+      })
+    },
     // 分页
     changePage (newPage) {
       console.log(newPage)
