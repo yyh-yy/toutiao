@@ -9,9 +9,9 @@
         <el-input style="width:60%" v-model="formData.title"></el-input>
       </el-form-item>
       <el-form-item label="内容" prop="content" >
-        <el-input type="textarea" :row="4" v-model="formData.content"></el-input>
+        <quill-editor type="textarea" :row="4" v-model="formData.content" style="height:450px"></quill-editor>
       </el-form-item>
-      <el-form-item label="封面" prop="cover">
+      <el-form-item label="封面" prop="cover" style="margin-top:120px">
         <el-radio-group v-model="formData.cover.type">
           <el-radio :label="1">单图</el-radio>
           <el-radio :label="3">三图</el-radio>
