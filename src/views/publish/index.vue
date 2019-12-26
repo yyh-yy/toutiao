@@ -88,19 +88,35 @@ export default {
       // 手动校验
       this.$refs.publishForm.validate(isOk => {
         if (isOk) {
-          console.log('校验通过')
-          this.$http({
-            url: '/articles',
-            method: 'post',
-            params: { draft },
-            data: this.formData
-          }).then(() => {
-            this.$message({
-              type: 'success',
-              message: '保存成功'
+          // 判断是保存还是修改
+          let{ articleId } = this.$route.params
+          if (articleId) {
+            this.$http({
+              url: `/articles/${articleId}`,
+              method: 'put',
+              params: { draft },
+              data: this.formData
+            }).then(res => {
+              this.$message({
+                type: 'success',
+                message: '保存成功'
+              })
+              this.$router.push('/home/articles')
             })
-            this.$router.push('/home/articles')
-          })
+          } else {
+            this.$http({
+              url: '/articles',
+              method: 'post',
+              params: { draft },
+              data: this.formData
+            }).then(() => {
+              this.$message({
+                type: 'success',
+                message: '保存成功'
+              })
+              this.$router.push('/home/articles')
+            })
+          }
         }
       })
     },
