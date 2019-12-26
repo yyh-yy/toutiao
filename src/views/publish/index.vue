@@ -64,9 +64,26 @@ export default {
       }
     }
   },
-  methods: {
+  watch: {
+    $route: function (to, from) {
+      if (to.params.articleId) {
 
-    //   发布文章
+      } else {
+        this.formData = {
+          title: '',
+          content: '',
+          cover: {
+            type: 0,
+            images: []
+          },
+          channel_id: null
+        }
+      }
+    }
+  },
+  //
+  methods: {
+    //    发布文章
     publishArticle (draft) {
       // 手动校验
       this.$refs.publishForm.validate(isOk => {
@@ -94,10 +111,19 @@ export default {
       }).then(res => {
         this.channels = res.data.channels
       })
+    },
+    ArticleById (articleId) {
+      this.$http({
+        url: `/articles/${articleId}`
+      }).then(res => {
+        this.formData = res.data
+      })
     }
   },
   created () {
     this.getChannels()
+    let{ articleId } = this.$route.params
+    articleId && this.ArticleById(articleId)
   }
 }
 </script>
