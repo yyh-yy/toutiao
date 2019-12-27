@@ -12,12 +12,13 @@
         <quill-editor type="textarea" :row="4" v-model="formData.content" style="height:450px"></quill-editor>
       </el-form-item>
       <el-form-item label="封面" prop="cover" style="margin-top:120px">
-        <el-radio-group v-model="formData.cover.type">
+        <el-radio-group v-model="formData.cover.type" @change="changeType">
           <el-radio :label="1">单图</el-radio>
           <el-radio :label="3">三图</el-radio>
           <el-radio :label="0">无图</el-radio>
           <el-radio :label="-1">自动</el-radio>
         </el-radio-group>
+{{formData.cover.images}}
       </el-form-item>
 
       <el-form-item label="频道" prop="channel_id">
@@ -83,6 +84,16 @@ export default {
   },
   //
   methods: {
+    // 监听封面类型的改变
+    changeType () {
+      if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
+        this.formData.cover.images = []
+      } else if (this.formData.cover.type === 1) {
+        this.formData.cover.images = ['']
+      } else if (this.formData.cover.type === 3) {
+        this.formData.cover.images = ['', '', '']
+      }
+    },
     //    发布文章
     publishArticle (draft) {
       // 手动校验
