@@ -20,7 +20,7 @@
         </el-radio-group>
       </el-form-item>
       <!-- 封面组件 -->
-      <cover-image :list="formData.cover.images"></cover-image>
+      <cover-image :list="formData.cover.images" @selectTowImage="receiveImg"></cover-image>
       <el-form-item label="频道" prop="channel_id">
         <el-select v-model="formData.channel_id">
           <el-option
@@ -84,6 +84,10 @@ export default {
   },
   //
   methods: {
+    // 接收子传的值
+    receiveImg (url, index) {
+      this.formData.cover.images = this.formData.cover.images.map((item, i) => i === index ? url : item)
+    },
     // 监听封面类型的改变
     changeType () {
       if (this.formData.cover.type === 0 || this.formData.cover.type === -1) {
