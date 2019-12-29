@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import eventBus from '../../utils/eventBus'
 export default {
   data () {
     return {
@@ -31,19 +32,26 @@ export default {
     }
   },
   created () {
-    // let token = window.localStorage.getItem('user-token')
-    this.$http({
-      url: '/user/profile'
-      // headers: {
-      //   Authorization: `Bearer ${token}`
-      // }
-    }).then(res => {
-      console.log(res)
+    this.updateUserInfo()
 
-      this.userInfo = res.data
+    eventBus.$on('updateUserInfo', () => {
+      this.updateUserInfo()
     })
   },
   methods: {
+    updateUserInfo () {
+      // let token = window.localStorage.getItem('user-token')
+      this.$http({
+        url: '/user/profile'
+      // headers: {
+      //   Authorization: `Bearer ${token}`
+      // }
+      }).then(res => {
+        console.log(res)
+
+        this.userInfo = res.data
+      })
+    },
     clickMenu (command) {
       if (command === 'info') {
         this.$router.push('/home/account')
