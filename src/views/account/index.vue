@@ -1,5 +1,5 @@
 <template>
-<el-card>
+<el-card v-loading='loading'>
     <bread-crumb slot="header">
     <template slot="title">账户信息</template>
     </bread-crumb>
@@ -20,7 +20,8 @@
             <el-button type="primary" @click="seveInfo">保存信息</el-button>
         </el-form-item>
     </el-form>
-    <el-upload class="head-upload" action="" :show-file-list="false">
+    <el-upload class="head-upload"
+     action="" :show-file-list="false" :http-request="uploadImg">
         <img :src="formData.photo ? formData.photo : defaultImg" alt="">
 
     </el-upload>
@@ -31,6 +32,7 @@
 export default {
   data () {
     return {
+      loading: false,
       formData: {
         name: '',
         intro: '',
@@ -54,6 +56,20 @@ export default {
     }
   },
   methods: {
+    //   上传图片
+    uploadImg (params) {
+      this.loading = true
+      let data = new FormData()
+      data.append('photo', params.file)
+      this.$http({
+        url: '/user/photo',
+        method: 'PATCH',
+        data
+      }).then(res => {
+        this.loading = false
+        this.formData.photo = res.data.photo
+      })
+    },
     //   保存信息
     seveInfo () {
       this.$refs.myForm.validate().then(res => {
