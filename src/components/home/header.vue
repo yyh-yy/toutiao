@@ -11,7 +11,7 @@
     <el-dropdown @command='clickMenu'>
       <span>{{userInfo.name}}</span>
         <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item command='info'>个人信息</el-dropdown-item>
+        <el-dropdown-item command='info' @click="clickMenu">个人信息</el-dropdown-item>
         <el-dropdown-item command='git'>Git地址</el-dropdown-item>
         <el-dropdown-item command='esc'>退出</el-dropdown-item>
         </el-dropdown-menu>
@@ -46,7 +46,7 @@ export default {
   methods: {
     clickMenu (command) {
       if (command === 'info') {
-        alert('还未完成')
+        this.$router.push('/home/account')
       } else if (command === 'git') {
         window.location.href = 'https://github.com/yyh-yy/toutiao/commit/f4955027ada6b14eecccbde59e72e7c465600aa2'
       } else {
