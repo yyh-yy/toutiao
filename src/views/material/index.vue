@@ -5,39 +5,53 @@
     </bread-crumb>
     <!-- 上传图片 -->
     <el-row type="flex" justify="end">
-      <el-upload action="" :http-request="uploadImg" :show-file-list='false'>
-      <el-button size="small" type="primary">上传图片</el-button>
+      <el-upload action :http-request="uploadImg" :show-file-list="false">
+        <el-button size="small" type="primary">上传图片</el-button>
       </el-upload>
     </el-row>
     <el-tabs v-model="activeName" @tab-click="changeTab">
       <el-tab-pane label="全部图片" name="all">
         <div class="img-list">
-          <el-card class="img-card" v-for="item in list" :key="item.id">
-            <img :src="item.url" alt />
+          <el-card class="img-card" v-for="(item,index) in list" :key="item.id">
+            <img @click="openDialog(index)" :src="item.url" alt />
             <el-row type="flex" class="icon" justify="space-around" align="middle">
-              <i @click="collectOrCancel(item)" class="el-icon-star-off" :style="{color:item. is_collected?'red':'#000'}"></i>
-              <i class="el-icon-delete-solid" @click='del_item(item.id)'></i>
+              <i
+                @click="collectOrCancel(item)"
+                class="el-icon-star-off"
+                :style="{color:item. is_collected?'red':'#000'}"
+              ></i>
+              <i class="el-icon-delete-solid" @click="del_item(item.id)"></i>
             </el-row>
           </el-card>
         </div>
-
       </el-tab-pane>
       <el-tab-pane label="收藏图片" name="collect">
         <div class="img-list">
-          <el-card class="img-card" v-for="item in list" :key="item.id">
-            <img :src="item.url" alt />
+          <el-card class="img-card" v-for="(item,index) in list" :key="item.id">
+            <img @click="openDialog(index)" :src="item.url" alt />
           </el-card>
         </div>
       </el-tab-pane>
     </el-tabs>
-       <el-row type="flex" justify="center">
-          <el-pagination background layout="prev, pager, next"
-          :total="page.total"
-          :page-size="page.pageSize"
-          :current-page="page.currentPage"
-          @current-change='changePage'
-          ></el-pagination>
-        </el-row>
+    <el-row type="flex" justify="center">
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="page.total"
+        :page-size="page.pageSize"
+        :current-page="page.currentPage"
+        @current-change="changePage"
+      ></el-pagination>
+    </el-row>
+    <el-row>
+      <el-dialog :visible.sync="dialogVisible" @opened="openEnd" @close="dialogVisible=false">
+        <el-carousel indicator-position="outside" ref="myCarosel" height="500px">
+          <el-carousel-item v-for="(item,index) in list" :key="index">
+            <img style="width:100%;height:100%" :src="item.url" alt="">
+          </el-carousel-item>
+        </el-carousel>
+      </el-dialog>
+    </el-row>
   </el-card>
 </template>
 
@@ -45,6 +59,7 @@
 export default {
   data () {
     return {
+      dialogVisible: false,
       loading: false,
       activeName: 'all',
       list: [],
@@ -52,10 +67,20 @@ export default {
         currentPage: 1,
         pageSize: 8,
         total: 0
-      }
+      },
+      clickIndex: -1
     }
   },
   methods: {
+    // 点击放大图片
+    openEnd () {
+      this.$refs.myCarosel.setActiveItem(this.clickIndex)
+    },
+    openDialog (index) {
+      this.dialogVisible = true
+
+      this.clickIndex = index
+    },
     // 删除
     del_item (id) {
       this.$confirm('你确定要删除此图片吗？').then(() => {
@@ -75,7 +100,6 @@ export default {
         data: {
           collect: !item.is_collected
         }
-
       }).then(res => {
         this.getMaterial()
       })
