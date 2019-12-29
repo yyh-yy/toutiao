@@ -2,7 +2,7 @@
 
 <el-row class="header-top">
   <el-col :span="12" class="left">
-      <i class="el-icon-s-fold"></i>
+      <i :class="{'el-icon-s-unfold' : collapse,'el-icon-s-fold':!collapse}" @click="collapseOrOpen" ></i>
       <span>江苏传智播客教育科技股份有限公司</span>
   </el-col>
   <el-col :span="12" class="right">
@@ -27,6 +27,7 @@ import eventBus from '../../utils/eventBus'
 export default {
   data () {
     return {
+      collapse: false,
       userInfo: {},
       userImg: require('../../assets/img/avatar.jpg')
     }
@@ -39,6 +40,10 @@ export default {
     })
   },
   methods: {
+    collapseOrOpen () {
+      this.collapse = !this.collapse
+      eventBus.$emit('changeCollapse')
+    },
     updateUserInfo () {
       // let token = window.localStorage.getItem('user-token')
       this.$http({
